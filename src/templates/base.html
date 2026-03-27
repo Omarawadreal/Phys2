@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{% block title %}{% endblock %} - Physics 2</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/psut.ico') }}">
+
+    <link ref="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+    <header>
+        <div class="header-title">
+            <img src="{{ url_for('static', filename='images/psut.ico')}}" alt="psut">
+            <h1><a href="/">Physics 2 Course Website</a></h1>
+        </div>
+        <div class="header-control">
+            <div class="theme-toggle">
+                <label for="theme-toggle">
+                    <input type="checkbox" id="theme-toggle">
+                    Dark Mode
+                </label>
+            </div>
+            <div>
+                <nav class="menu">
+                    <a class="menu-control-button" href="#"><i class="fa-solid fa-bars"></i></a>
+                    <ul class="dropdown">
+                        {% if not session['userInfo'] %}
+                        <li><a href="/login">Login</a></li>
+                        <li><a href="/signup">Sign Up</a></li>
+                        {% else %}
+                        <li><a id="dropdown-logout-button" href="#">Logout</a></li>
+                        {% endif %}
+                        <hr />
+                        <li><a href="/">Home</a></li>
+                        {% if 'userInfo' in session%}
+                        <li><a href="/grades">Marks</a></li>
+                        {% if session['userInfo']['accountType'] == 'stu'%}
+                        <li><a href="/anonymous-feedback">Feedback</a></li>
+                        {% endif %}
+                        {% if session['userInfo']['accountType'] == 'ins'%}
+                        <li><a href="/grades/remark">Remark requests</a></li>
+                        <li><a href="/feedback-recieved">Feedback</a></li>
+                        {% endif %}
+                        {% endif %}
+                        <li><a href="/syllabus">Syllabus</a></li>
+                        <li><a href="/assignments">Assignments</a></li>
+                        <li><a href="/labs">Labs</a></li>
+                        <li><a href="/lecture-notes">Lecture Notes</a></li>
+                        <li><a href="https://www.cengage.uk/dashboard/home">Cengage</a></li>
+                        <!--
+                         <li><a href="https://markus2.utsc.utoronto.ca/">MarkUs</a></li>
+                          -->
+                        <li><a href="/course-team">Course Team</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    {% block content %}{% endblock %}
+
+    <footer>
+      <a rel="noreferrer" target="_blank" href="https://psut.edu.jo/">
+            <img
+                src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fportal.psut.edu.jo%2FImages%2FLogoVcampus.png&f=1&nofb=1&ipt=f32aa0443d5b7cdaf8bda8209280cb6f4e5e0484cef4dfcaf0df4486df5599dc?format=1500w" />
+        </a>
+        <p>Website created by Omar Awad</p>
+    </footer>
+</body>
+
+</html>
+
+</html>

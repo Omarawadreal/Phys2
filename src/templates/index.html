@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block head %}
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="main-container flex-container">
+    <div class="flex-left">
+        {% if session['userInfo'] %}
+        <div class="container">
+            <div class="container-header">
+                <h2>Welcome back, {{ session['userInfo']['displayName'] }}!</h2>
+            </div>
+            <div class="container-content">
+                {% if session['userInfo']['accountType'] == 'stu' %}
+                    <p>You can <a href="/grades">View Marks</a> | <a href="/anonymous-feedback">Submit Anonymous Feedback</a> | <a href="#" id="logout-button">Logout</a></p>
+                    <p>You may also submit a regrade request in the grading page.</p>
+                {% elif session['userInfo']['accountType'] == 'ins' %}
+                    <p>You can <a href="/grades">Manage Marks & Remark Requests</a> | <a href="/anonymous-feedback">View Anonymous Feedback</a> | <a href="#" id="logout-button">Logout</a></p>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+        <div class="container">
+            <div class="container-header">
+                <h2>Welcome to Physics 2!</h2>
+            </div>
+            <div class="container-content">
+                <p>This course aims to enable students to understand concepts and phenomena and
+solve problems in electricity and magnetism based on fundamental laws of
+physics and provide a basic understanding of electric circuits</p>
+                <p>We're excited to have you in the course and look forward to helping you develop a deep understanding in the scope of electrical Physics</p>
+
+                <h3>Topics we will cover in this course:</h3>
+                <p>Electric Fields, Gauss’s Law, Electric Potential, Capacitance and Dielectrics,
+Current and Resistance, Direct-Current Circuits, Magnetic Fields, Sources of
+Magnetic Fields, Faraday’s Law, Inductance</p>
+                <p><strong>Note: </strong>please make sure to read the <a href="/syllabus">Syllabus</a> for this course as you are responsible for doing so.</p>
+            </div>
+        </div>
+        <div class="container">
+            <div class="container-header">
+                <h2>Coursework Breakdown</h2>
+            </div>
+            <div class="container-content">
+                {% if session['userInfo'] %}
+                <ul>
+                    <li>Assignments (0%)</li>
+                    <p>You will not be given any assingments aside from the project</p>
+                </ul>
+                <ul>
+                    <li>Project (10%)</li>
+                </ul>
+                <br />
+                <ul>
+                    <li>Mid-Term (30%)</li>
+                    <ul>
+                        <li>The mid-term exam will be held in-person paper based. (Date: TBA)</li>
+                        <li>Duration: 120 minutes</li>
+                    </ul>
+                </ul>
+                <br />
+                <ul>
+                    <li>Quizes (20%)</li>
+                </ul>
+                <br />
+                <ul>
+                    <li>Final Exam (40%)</li>
+                    <ul>
+                        <li>There will be one in-person final exam for the course.</li>
+                        <li><strong>Note:</strong> Attendace is mandatory and lack of it can prevent you from claming course credit.
+                        </li>
+                    </ul>
+                </ul>
+                {% else %}
+                <p>Please <a href="/login">login</a> to view course breakdown.</p>
+                {% endif %}
+            </div>
+        </div>
+       <!-- <div class="container">
+            <div class="container-header">
+                <h2>Academic Integrity</h2>
+            </div>
+            <div class="container-content">
+                <p>All of the work you submit must be done by you, and your work must not be submitted by someone
+                    else. Plagiarism is academic fraud and is taken very seriously. The department uses software
+                    that compares programs for evidence of similar code. Please read the Rules and Regulations from
+                    the U of T Governing Council, especially the Code of Behaviour on Academic Matters.</p>
+                <p>Please also see the information for students from the Office of Student Academic Integrity.</p>
+                <p>Please don't copy. We want you to succeed and are here to help.</p>
+                <p>The simplest advice for avoiding plagiarism is:</p>
+                <ul>
+                    <li>Never look at another student's assignment solution (except for your teammates, if
+                        collaboration is allowed). This includes solutions on paper, computer screens, or any other
+                        medium. Similarly, never show your assignment solution to another student. This rule applies
+                        to all stages of your work, including drafts and incomplete solutions.</li>
+                    <li>If you find code on the web that solves part or all of an assignment, do not use or submit
+                        any part of it. A large percentage of the academic offences in CS involve students who have
+                        never met, and who just happened to find the same solution online. If you find a solution,
+                        someone else will too.
+                    </li>
+                    <li><strong>Be very careful</strong> when engaging "tutoring services". In previous years, we
+                        had students suspended from the university as a result of submitting work that was done with
+                        the "help" of such "tutors". When in doubt whether a tutoring company is offering real
+                        teaching or is helping students cheat, do not hesitate to ask your instructor — we are here
+                        to help!</li>
+                </ul>
+            </div>
+        </div>
+        <div class="container">
+            <div class="container-header">
+                <h2>Accessibility Statement</h2>
+            </div>
+            <div class="container-content">
+                <p>Students with diverse learning styles and needs are welcome in this course. In particular, if you
+                    have a
+                    disability/health consideration that may require accommodations, please feel free to approach
+                    your
+                    instructor, course coordinator, and/or the <a
+                        href="https://www.utsc.utoronto.ca/ability/">AccessAbility
+                        Services Office</a> as soon as possible. I will work with you and AccessAbility Services to
+                    ensure
+                    you
+                    can achieve your learning goals in this course. Enquiries are confidential.</p>
+            </div>
+        </div>
+    -->
+    </div>
+    <div class="flex-right">
+        {% if not session['userInfo'] %}
+        <div class="container">
+            <div class="container-header">
+                <h2>Login</h2>
+            </div>
+            <div class="container-content">
+                <div>
+                    <label for="utorid">UID</label><br />
+                    <input id="login-utorid" type="text" name="utorid" class="fullwidth" required>
+                </div>
+                <div>
+                    <label for="password">Password</label><br />
+                    <input id="login-password" type="password" name="password" class="fullwidth" required>
+                </div>
+                <p>Don't have an account? <a href="/signup">Sign Up</a></p>
+                <button id="login-button" class="fullwidth mt-4">Login</button>
+                <p id="login-message" class="{{ 'hidden' if not message else 'error-message' }}">{{ message }}</p>
+            </div>
+        </div>
+        {% endif %}
+        <div class="container">
+            <div class="container-header">
+                <h2>Contact Information</h2>
+            </div>
+            <div class="container-content">
+                <img src="./{{ url_for('static', filename='images/tariq.jpg')}}" alt="Tariq">
+                <p>Dr. Tariq</p>
+                <p>Dr. Tariq is the course coordinator, which means that he deals with all administrative matters:
+                    missed
+                    work,
+                    problems with your grades, and TA issues.</p>
+                {% if session['userInfo'] %}
+                <p>Email: <a rel="noreferrer" href="mailto:t.aldaraghmeh@psut.edu.jo ">t.aldaraghmeh@psut.edu.jo </a></p>
+                <br />
+                <p>Office Hours:</p>
+                <p>Location: My Office</p>
+                <p>Time: Sunday/Tuesday/Thursday (11:30-12:30), Monday/Wednesday (12:00-13:00),
+and by appointment</p>
+                {% else %}
+                <p>Please <a href="/login">login</a> to access detailed information.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

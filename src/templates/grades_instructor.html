@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% from 'components/modal_manage_regrade_request.html' import modal_manage_regrade_request %}
+{% from 'components/modal_edit_mark.html' import modal_edit_mark %}
+{% from 'components/modal_enter_mark.html' import modal_enter_mark %}
+
+{% block title %} Grades {% endblock %}
+
+{% block head %}
+<script src="{{ url_for('static', filename='js/grades.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="main-container flex-container">
+    <div class="flex-left">
+        <div class="container">
+            <div class="container-header space-between">
+                <h2>Student Marks</h2>
+                <button class="enter-mark-button button-secondary">Enter Mark</button>
+            </div>
+            <div class="container-content">
+                <div style="display:flex;justify-content:space-between;">
+                    <div>
+                        <label for="mark-group-id">Evaluation:</label>
+                        <select id="mark-group-id" name="mark-group-id">
+                            <option value="-1" selected>All</option>
+                            {% for mark_group in all_mark_groups %}
+                            <option value="{{ mark_group.groupId }}">{{
+                                mark_group.title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <input id="filter-student" type="text" name="filter-student" placeholder="Student Name / ID">
+                    </div>
+                </div>
+                <div class="grades-table" id="grades-table">
+                    <div class="table-header">
+                        <div class="header-cell">Evaluation</div>
+                        <div class="header-cell">Student</div>
+                        <div class="header-cell">Mark</div>
+                        <div class="header-cell">Remark Request</div>
+                    </div>
+
+                    {% for mark in instructor_marks %}
+                    <div class="table-row mark-row" data-mark-id="{{ mark[2].markId }}"
+                        data-mark-group-id="{{ mark[1].groupId }}" data-student-name="{{ mark[0].displayName }}"
+                        data-student-id="{{ mark[0].studentId }}">
+                        <div class="table-cell">
+                            <h3>{{ mark[1].title }}</h3>
+                        </div>
+                        <div class="table-cell">
+                            <p>{{ mark[0].displayName }}</p>
+                        </div>
+                        <div class="table-cell">
+                            <p>
+                                <span class="grade" data-mark-id="{{ mark[2].markId }}">{{mark[2].grade * 100 //
+                                    mark[1].maxGrade}}% ({{ mark[2].grade }}/{{ mark[1].maxGrade }})</span>
+                                (<a class="edit-mark-button" href="#" data-mark-id="{{ mark[2].markId }}"
+                                    data-student-name="{{ mark[0].displayName }}"
+                                    data-evaluation-title="{{ mark[1].title }}" data-grade="{{ mark[2].grade }}"
+                                    data-max-grade="{{ mark[1].maxGrade }}">Edit</a>)
+                            </p>
+                        </div>
+                        <div class="table-cell">
+                            {% if mark[3] %}
+                            <p>
+                                <span data-request-id="{{ mark[3].requestId }}">{{ mark[3].status }}</span>
+                                (<a class="view-remark-request-button" href="#" data-mark-id="{{ mark[2].markId }}"
+                                    data-request-id="{{ mark[3].requestId }}"
+                                    data-student-name="{{ mark[0].displayName }}"
+                                    data-evaluation-title="{{ mark[1].title }}" data-grade="{{ mark[2].grade }}"
+                                    data-max-grade="{{ mark[1].maxGrade }}" data-reason="{{ mark[3].reason }}"
+                                    data-status="{{ mark[3].status }}">View</a>)
+                            </p>
+                            {% else %}
+                            <p>N/A</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flex-right">
+        <div class="container">
+            <div class="container-header">
+                <h2>Marks Management</h2>
+            </div>
+            <div class="container-content">
+                <p>Welcome back, {{ session['userInfo']['displayName'] }}!</p>
+                <p>To view ALL remark requests, please <a href="/grades/remark">click here</a>.</p>
+                <p>To enter new mark records, please <a href="#" class="enter-mark-button">click here</a>.</p>
+                <p>ProTip: You can filter the student and evaluation on the left, and manage the regrade requests if
+                    applicable.</p>
+                <p style="font-size:12px;margin-top:8px;">*Note: If you looked at our database schema, we used a MarkGroup table to identify the evaluation a mark belongs to. Currently, the records in MarkGroup is hard-coded and we decided to not provide a client-side functionality to create a MarkGroup because we are close to the submission deadline and are not planning to add even more out-of-scope functionalities.</p>
+                <p style="font-size:12px;margin-top:8px;">*Another note: We also have a "releasedAt" attribute for each MarkGroup but we decided not to provide any "write" functionality at client-side due to the extra work. However, "read" is supported (the "Not yet released" in student view). The "releasedAt" is currently hard-coded when the MarkGroup is created.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ modal_manage_regrade_request() }}
+{{ modal_edit_mark() }}
+{{ modal_enter_mark(all_mark_groups, all_students) }}
+{% endblock %}

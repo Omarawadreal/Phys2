@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Course Team
+{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="no-flex">
+        <div class="container">
+            <div class="container-header">
+                <h2>Course Team</h2>
+            </div>
+            <div class="container-content flex">
+                <div class="flex-left">
+                    <p>Dr. Tariq aldaraghmeh</p>
+                    <p>Dr. Tariq is the course coordinator, which means that he deals with all administrative matters:
+                        missed
+                        work,
+                        problems with your grades, and TA issues.</p>
+                    <p>Email: <a rel="noreferrer" href="mailto:t.aldaraghmeh@psut.edu.jo">t.aldaraghmeh@psut.edu.jo</a>
+                    </p>
+                    <br />
+                    <p>Office Hours:</p>
+                    <p>Location: My Office</p>
+                    <p>Time: Sunday/Tuesday/Thursday (11:30-12:30), Monday/Wednesday (12:00-13:00),
+and by appointment</p>
+                </div>
+                <div class="flex-right" style="display:flex;justify-content:right;">
+                    <img src="./{{ url_for('static', filename='images/tariq.jpg')}}" alt="Tariq" style="margin-right:24px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

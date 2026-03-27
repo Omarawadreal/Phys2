@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Anonymous Feedback
+{% endblock %}
+
+{% block head %}
+<script src="{{ url_for('static', filename='js/feedback.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="container">
+        <div class="container-header">
+            <h2>Anonymous Feedback</h2>
+        </div>
+        <div class="container-content">
+            <div>
+                <label for="instructor">Select your instructor:</label><br />
+                <select id="feedback-instructor-id" name="instructor" class="fullwidth" required>
+                    {% for instructor in all_instructors %}
+                        <option value="{{ instructor.userId }}">{{ instructor.displayName }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="ins-likes">What do you like about the instructors teaching?</label><br />
+                <form>
+                    <textarea name="ins-likes" id="feedback-ins-likes"
+                        placeholder="Please enter your feedback here"></textarea><br>
+                </form>
+            </div>
+            <div>
+                <label for="ins-suggestions">What do you recommend the instructor to do to improve their
+                    teaching?</label><br />
+                <form>
+                    <textarea name="ins-suggestions" id="feedback-ins-suggestions"
+                        placeholder="Please enter your feedback here"></textarea><br>
+                </form>
+            </div>
+            <div>
+                <label for="labs-likes">What do you like about the labs?</label><br />
+                <form>
+                    <textarea name="labs-likes" id="feedback-labs-likes"
+                        placeholder="Please enter your feedback here"></textarea><br>
+                </form>
+            </div>
+            <div>
+                <label for="labs-suggestions">What do you recommend the lab instructors to do to improve their lab
+                    teaching?</label><br />
+                <form>
+                    <textarea name="labs-suggestions" id="feedback-labs-suggestions"
+                        placeholder="Please enter your feedback here"></textarea><br>
+                </form>
+            </div>
+            <div style="display:flex;justify-content:end;margin-top:8px;">
+                <button id="feedback-submit-button" class="button" type="submit">Submit Feedback</button>
+            </div>
+            <p id="feedback-message" class="hidden">{{ message }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
