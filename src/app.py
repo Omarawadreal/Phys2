@@ -200,29 +200,50 @@ def signup():
 def api_signup():
     data = request.json
 
-    userObj = User(utorId=data['utorId'], password=bcrypt.generate_password_hash(data['password']).decode('utf-8'), displayName=data['displayName'], email=data['email'], accountType=data['accountType'], createdAt=int(time.time()))
+    if data['accountType'] not in ('stu', 'ins'):
+        return {'error': 'Invalid account type'}, 400
+
+    if data['accountType'] == 'ins':
+        if not data['email'].endswith('@psut.edu.jo'):
+            return {'error': 'Invalid email address or account type'}, 400
+
     if data['accountType'] == 'stu':
-        userObj.studentId = data['studentId']
         if not data['studentId'].isnumeric():
             return {'error': 'Invalid student ID'}, 400
-    elif data['accountType'] != 'ins':
-        return {'error': 'Invalid account type'}, 400
-    if not data['email'].endswith('@psut.edu.jo'):
-        return {'error': 'Invalid email address'}, 400
-    
+        if not data['email'].endswith('@std.psut.edu.jo'):
+            return {'error': 'Invalid email address or account type'}, 400
+
     if User.query.filter((User.utorId == data['utorId']) | (User.email == data['email'])).first():
         return {'error': 'User already exists'}, 400
-    
+
     if data['accountType'] == 'stu':
-        userObj.studentId = data['studentId']
         if User.query.filter_by(studentId=data['studentId']).first():
             return {'error': 'User already exists'}, 400
-        
-    session['userId'] = userObj.userId
-    session['userInfo'] = {'userId': userObj.userId, 'utorId': userObj.utorId, 'displayName': userObj.displayName, 'email': userObj.email, 'accountType': userObj.accountType}
-    
+
+    userObj = User(
+        utorId=data['utorId'],
+        password=bcrypt.generate_password_hash(data['password']).decode('utf-8'),
+        displayName=data['displayName'],
+        email=data['email'],
+        accountType=data['accountType'],
+        createdAt=int(time.time())
+    )
+
+    if data['accountType'] == 'stu':
+        userObj.studentId = data['studentId']
+
     db.session.add(userObj)
     db.session.commit()
+
+    session['userId'] = userObj.userId
+    session['userInfo'] = {
+        'userId': userObj.userId,
+        'utorId': userObj.utorId,
+        'displayName': userObj.displayName,
+        'email': userObj.email,
+        'accountType': userObj.accountType
+    }
+
     return {'message': 'User created successfully'}, 201
 
 @app.route('/api/login', methods=['POST'])

@@ -49,7 +49,7 @@ $(document).ready(() => {
 
     const handleAccountTypeChange = () => {
         const accountType = $("#signup-account-type").val();
-        if (accountType === "instructor") {
+        if (accountType === "ins") {
             $("#signup-student-id-div").hide();
         } else {
             $("#signup-student-id-div").show();
@@ -58,7 +58,13 @@ $(document).ready(() => {
     $("#signup-account-type").change(handleAccountTypeChange);
     handleAccountTypeChange(); // detect initial value
 
+    //Check for double creation
+    let isSubmitting = false;
+
     const handleSignUp = () => {
+
+        if (isSubmitting) return;
+        isSubmitting = true;
         $("#signup-message").text("");
         $("#signup-message").removeClass("error-message");
         $("#signup-message").removeClass("success-message");
@@ -68,6 +74,22 @@ $(document).ready(() => {
         const displayName = $("#signup-display-name").val();
         const utorId = $("#signup-utorid").val();
         const password = $("#signup-password").val();
+
+        let instructorCode = null;
+
+        if (accountType === 'ins') {
+        instructorCode = window.prompt('Enter instructor code:');
+        if (instructorCode === null){
+             isSubmitting = false;
+            return; // user cancelled
+            
+            }
+        if (instructorCode != 'Physics2'){
+            isSubmitting = false;
+            window.alert('Incorrect Password')
+            return;
+        }
+        }
         $.ajax({
             type: "POST",
             url: "/api/signup",
@@ -80,18 +102,21 @@ $(document).ready(() => {
                 setTimeout(() => {
                     window.location.href = "/";
                 }, 500);
+                isSubmitting = false;
             },
             error: (error) => {
                 const data = JSON.parse(error.responseText);
                 $("#signup-message").text(data.error);
                 $("#signup-message").addClass("error-message");
                 $("#signup-message").fadeIn();
+                isSubmitting = false;
             }
         });
     };
 
     $("#signup-password").keypress((e) => {
         if (e.which == 13) {
+            e.preventDefault();
             handleSignUp();
         }
     });

@@ -4,10 +4,6 @@
 Sign Up
 {% endblock %}
 
-{% block head %}
-<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
-{% endblock %}
-
 {% block content %}
 <div class="main-container">
     <div class="flex-center">
@@ -51,7 +47,7 @@ Sign Up
                 </div>
                 <p>Already have an account? <a href="/login">Login</a></p>
                 <p>Note: You may not change any information after signup.</p>
-                <button id="signup-button" class="fullwidth mt-4">Sign Up</button>
+                <button type="button" id="signup-button" class="fullwidth mt-4">Sign Up</button>
                 <p id="signup-message" class="{{ 'hidden' if not message else 'error-message' }}">{{ message }}</p>
             </div>
         </div>
