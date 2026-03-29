@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Calculators
+{% endblock %}
+{% block head %}
+<script src="{{ url_for('static', filename='js/calcs.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="">
+        <div class="container">
+            <div class="container-header">
+                <h2>Calculators</h2>
+            </div>
+            <div class="container-content">
+ 
+            <div>
+                <label for="calc_option">Select your Calculator:</label><br />
+                <select id="calc_option" name="calc_option" class="fullwidth" required onchange="switchCalculator()">
+                    <option value="electric_field">Electric Field</option>
+                    <option value="ohms_law">Ohm's Law</option>
+                    <option value="kinetic_energy">Kinetic Energy</option>
+                    <option value="projectile_motion">Projectile Motion</option>
+                </select>
+            </div>
+ 
+            <!-- Electric Field: E = F / q -->
+            <div id="calc-electric_field" class="calc-panel">
+                <br/>
+                <label>Force (F) in Newtons:</label><br />
+                <input type="number" id="ef-force" class="fullwidth" placeholder="Enter force (N)" /><br /><br />
+ 
+                <label>Charge (q) in Coulombs:</label><br />
+                <input type="number" id="ef-charge" class="fullwidth" placeholder="Enter charge (C)" /><br /><br />
+ 
+                <label>Distance (r) in Meters:</label><br />
+                <input type="number" id="ef-distance" class="fullwidth" placeholder="Enter distance (m)" /><br /><br />
+ 
+                <label>Electric Field Strength (E) in N/C:</label><br />
+                <input type="text" id="ef-result" class="fullwidth" placeholder="Result will appear here" readonly />
+            </div>
+ 
+            <!-- Ohm's Law: V = I * R -->
+            <div id="calc-ohms_law" class="calc-panel" style="display:none;">
+                <br/>
+                <label>Voltage (V) in Volts:</label><br />
+                <input type="number" id="ol-voltage" class="fullwidth" placeholder="Enter voltage (V) or leave blank for result" /><br /><br />
+ 
+                <label>Current (I) in Amperes:</label><br />
+                <input type="number" id="ol-current" class="fullwidth" placeholder="Enter current (A) or leave blank for result" /><br /><br />
+ 
+                <label>Resistance (R) in Ohms:</label><br />
+                <input type="number" id="ol-resistance" class="fullwidth" placeholder="Enter resistance (Ω) or leave blank for result" /><br /><br />
+ 
+                <label>Result:</label><br />
+                <input type="text" id="ol-result" class="fullwidth" placeholder="Result will appear here" readonly />
+            </div>
+ 
+            <!-- Kinetic Energy: KE = 0.5 * m * v^2 -->
+            <div id="calc-kinetic_energy" class="calc-panel" style="display:none;">
+                <br/>
+                <label>Mass (m) in Kilograms:</label><br />
+                <input type="number" id="ke-mass" class="fullwidth" placeholder="Enter mass (kg)" /><br /><br />
+ 
+                <label>Velocity (v) in m/s:</label><br />
+                <input type="number" id="ke-velocity" class="fullwidth" placeholder="Enter velocity (m/s)" /><br /><br />
+ 
+                <label>Acceleration (a) in m/s²:</label><br />
+                <input type="number" id="ke-acceleration" class="fullwidth" placeholder="Enter acceleration (m/s²)" /><br /><br />
+ 
+                <label>Kinetic Energy (KE) in Joules:</label><br />
+                <input type="text" id="ke-result" class="fullwidth" placeholder="Result will appear here" readonly />
+            </div>
+ 
+            <!-- Projectile Motion: Range = (v^2 * sin(2θ)) / g -->
+            <div id="calc-projectile_motion" class="calc-panel" style="display:none;">
+                <br/>
+                <label>Initial Velocity (v₀) in m/s:</label><br />
+                <input type="number" id="pm-velocity" class="fullwidth" placeholder="Enter initial velocity (m/s)" /><br /><br />
+ 
+                <label>Launch Angle (θ) in Degrees:</label><br />
+                <input type="number" id="pm-angle" class="fullwidth" placeholder="Enter angle (°)" /><br /><br />
+ 
+                <label>Gravity (g) in m/s² (default 9.81):</label><br />
+                <input type="number" id="pm-gravity" class="fullwidth" placeholder="Enter gravity (m/s²)" /><br /><br />
+ 
+                <label>Horizontal Range (R) in Meters:</label><br />
+                <input type="text" id="pm-result" class="fullwidth" placeholder="Result will appear here" readonly />
+            </div>
+ 
+            <div style="display:flex; justify-content:end; gap:8px; margin-top:16px;">
+                <button id="calc-clear-button" class="button" type="button" onclick="clearCalculator()">Clear</button>
+                <button id="calc-submit-button" class="button" type="button" onclick="calculate()">Calculate</button>
+            </div>
+ 
+            <p id="calc-message" class="hidden"></p>
+ 
+        </div>
+    </div>
+</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

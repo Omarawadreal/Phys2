@@ -8,6 +8,7 @@
 - [ ] Objective 2: [Better UI]
 - [ ] Objective 3: [Add Calculators for various physics concepts]
 - [ ] Optional Objective: [Add simulator for charges]
+- [ ] Optional Objective: [Modular course team]
 
 
 ## Notes

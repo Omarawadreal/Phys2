@@ -163,6 +163,10 @@ def lecture_notes():
         return redirect(url_for('login', message="Please login to access the lecture notes."))
     return render_template('lecture_notes.html')
 
+@app.route('/calcs')
+def calcs():
+    return render_template('calcs.html')
+
 @app.route('/anonymous-feedback')
 def anonymous_feedback():
     if 'userId' not in session:
