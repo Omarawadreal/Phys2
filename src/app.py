@@ -18,7 +18,7 @@ TIMEZONE_OFFSET = -4 * 3600 # EDT
 class User(db.Model):
     __tablename__ = 'users'
     userId = db.Column(db.Integer, primary_key=True)
-    utorId = db.Column(db.String(16), nullable=False) # should be 8 though
+    utorId = db.Column(db.String(16), nullable=False)
     password = db.Column(db.String(255), nullable=False)
     studentId = db.Column(db.Integer, nullable=True)
     displayName = db.Column(db.String(255), nullable=False)
