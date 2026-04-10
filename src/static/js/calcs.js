@@ -4,30 +4,45 @@ function switchCalculator() {
         document.getElementById('calc-' + selected).style.display = 'block';
         clearCalculator();
     }
- 
+const UNIT_EXPONENTS = {
+    default: 0,
+    kilo:   3,
+    centi: -2,
+    milli: -3,
+    micro: -6,
+    nano:  -9,
+    pico:  -12
+};
+
 function calculate() {
     const selected = document.getElementById('calc_option').value;
  
      if (selected === 'electric_field') {
-            const F = parseFloat(document.getElementById('ef-force').value);
-            const q = parseFloat(document.getElementById('ef-charge').value);
-            const r = parseFloat(document.getElementById('ef-distance').value);
+            let F = parseFloat(document.getElementById('ef-force').value);
+            let q = parseFloat(document.getElementById('ef-charge').value);
+            let r = parseFloat(document.getElementById('ef-distance').value);
             if (isNaN(F) || isNaN(q) || isNaN(r)) {
                 document.getElementById('ef-result').value = 'Please fill in all fields.';
                 return;
             }
             if (q === 0) { document.getElementById('ef-result').value = 'Charge cannot be zero.'; return; }
+            F = F * Math.pow(10, UNIT_EXPONENTS[document.getElementById('ef-force-unit').value]);
+            q = q * Math.pow(10, UNIT_EXPONENTS[document.getElementById('ef-charge-unit').value]);
+            r = r * Math.pow(10, UNIT_EXPONENTS[document.getElementById('ef-distance-unit').value]);
             document.getElementById('ef-result').value = (F / q).toFixed(4) + ' N/C';
  
         } else if (selected === 'ohms_law') {
-            const V = document.getElementById('ol-voltage').value;
-            const I = document.getElementById('ol-current').value;
-            const R = document.getElementById('ol-resistance').value;
-            const blank = [V, I, R].filter(v => v === '').length;
+            let V = document.getElementById('ol-voltage').value;
+            let I = document.getElementById('ol-current').value;
+            let R = document.getElementById('ol-resistance').value;
+            let blank = [V, I, R].filter(v => v === '').length;
             if (blank !== 1) {
                 document.getElementById('ol-result').value = 'Leave exactly one field blank for the result.';
                 return;
             }
+            V = V * Math.pow(10, UNIT_EXPONENTS[document.getElementById('ol-voltage-unit').value]);
+            I = I * Math.pow(10, UNIT_EXPONENTS[document.getElementById('ol-current-unit').value]);
+            R = R * Math.pow(10, UNIT_EXPONENTS[document.getElementById('ol-resistance-unit').value]);
             if (V === '') document.getElementById('ol-result').value = 'V = ' + (parseFloat(I) * parseFloat(R)).toFixed(4) + ' V';
             else if (I === '') document.getElementById('ol-result').value = 'I = ' + (parseFloat(V) / parseFloat(R)).toFixed(4) + ' A';
             else document.getElementById('ol-result').value = 'R = ' + (parseFloat(V) / parseFloat(I)).toFixed(4) + ' Ω';
