@@ -14,6 +14,20 @@ const UNIT_EXPONENTS = {
     pico:  -12
 };
 
+const epsilon0 = 8.85e-12; // Permittivity of free space (F/m)
+const ke = 1 / (4 * Math.PI * epsilon0); // Coulomb's constant (N·m²/C²)
+/*
+laws to implement: 
+- Coulomb's Law: F = ke * |q1 * q2| / r²
+- Electrric force: F = q * E
+- Capacitance: C = Q / V [sphere, cylinder, parallel plate]
+ 
+- 
+
+
+
+*/
+
 function calculate() {
     const selected = document.getElementById('calc_option').value;
  
@@ -29,7 +43,7 @@ function calculate() {
             F = F * Math.pow(10, UNIT_EXPONENTS[document.getElementById('ef-force-unit').value]);
             q = q * Math.pow(10, UNIT_EXPONENTS[document.getElementById('ef-charge-unit').value]);
             r = r * Math.pow(10, UNIT_EXPONENTS[document.getElementById('ef-distance-unit').value]);
-            document.getElementById('ef-result').value = (F / q).toFixed(4) + ' N/C';
+            document.getElementById('ef-result').value = ((F / q).toExponential()).replace('e', ' × 10^') + ' N/C';
  
         } else if (selected === 'ohms_law') {
             let V = document.getElementById('ol-voltage').value;
