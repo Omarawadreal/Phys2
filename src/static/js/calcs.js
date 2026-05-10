@@ -34,16 +34,14 @@ function calculate() {
      if (selected === 'electric_field') {
             let F = parseFloat(document.getElementById('ef-force').value);
             let q = parseFloat(document.getElementById('ef-charge').value);
-            let r = parseFloat(document.getElementById('ef-distance').value);
-            if (isNaN(F) || isNaN(q) || isNaN(r)) {
-                document.getElementById('ef-result').value = 'Please fill in all fields.';
-                return;
+                if (!isNaN(F) && !isNaN(q)) {
+                F = F * Math.pow(10, UNIT_EXPONENTS[document.getElementById('ef-force-unit').value]);
+                q = q * Math.pow(10, UNIT_EXPONENTS[document.getElementById('ef-charge-unit').value]);
+                let E = F / q;
+                document.getElementById('ef-result').value = E.toExponential().replace('e', ' × 10^') + ' N/C';
+            } else {
+                document.getElementById('ef-result').value = '';
             }
-            if (q === 0) { document.getElementById('ef-result').value = 'Charge cannot be zero.'; return; }
-            F = F * Math.pow(10, UNIT_EXPONENTS[document.getElementById('ef-force-unit').value]);
-            q = q * Math.pow(10, UNIT_EXPONENTS[document.getElementById('ef-charge-unit').value]);
-            r = r * Math.pow(10, UNIT_EXPONENTS[document.getElementById('ef-distance-unit').value]);
-            document.getElementById('ef-result').value = ((F / q).toExponential()).replace('e', ' × 10^') + ' N/C';
  
         } else if (selected === 'ohms_law') {
             let V = document.getElementById('ol-voltage').value;
@@ -64,26 +62,33 @@ function calculate() {
         } else if (selected === 'kinetic_energy') {
             const m = parseFloat(document.getElementById('ke-mass').value);
             const v = parseFloat(document.getElementById('ke-velocity').value);
-            if (isNaN(m) || isNaN(v)) {
-                document.getElementById('ke-result').value = 'Please fill in mass and velocity.';
-                return;
+            if (!isNaN(m) && !isNaN(v)) {
+                let ke = 0.5 * m * v * v;
+                document.getElementById('ke-result').value = ke.toExponential().replace('e', ' × 10^') + ' J';
+            } else {
+                document.getElementById('ke-result').value = '';
             }
-            document.getElementById('ke-result').value = (0.5 * m * v * v).toFixed(4) + ' J';
  
         } else if (selected === 'projectile_motion') {
             const v0 = parseFloat(document.getElementById('pm-velocity').value);
             const theta = parseFloat(document.getElementById('pm-angle').value);
             const gInput = document.getElementById('pm-gravity').value;
             const g = gInput === '' ? 9.81 : parseFloat(gInput);
-            if (isNaN(v0) || isNaN(theta)) {
-                document.getElementById('pm-result').value = 'Please fill in velocity and angle.';
-                return;
+            if (!isNaN(v0) && !isNaN(theta)) {
+                const range = (v0 * v0 * Math.sin(2 * theta * Math.PI / 180)) / g;
+                document.getElementById('pm-result').value = range.toExponential().replace('e', ' × 10^') + ' m';
+            } else {
+                document.getElementById('pm-result').value = '';
             }
-            const range = (v0 * v0 * Math.sin(2 * theta * Math.PI / 180)) / g;
-            document.getElementById('pm-result').value = range.toFixed(4) + ' m';
         }
     }
  
 function clearCalculator() {
         document.querySelectorAll('.calc-panel input').forEach(i => i.value = '');
     }
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.calc-panel input').forEach(input => {
+        input.addEventListener('input', calculate);
+    });
+});
